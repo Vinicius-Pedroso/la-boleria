@@ -2,6 +2,6 @@ import { Router } from "express";
 
 const cakesRoutes = Router()
 
-cakesRoutes.post("/cakes")
+cakesRoutes.post("/cakes", )
 
 export default cakesRoutes;
