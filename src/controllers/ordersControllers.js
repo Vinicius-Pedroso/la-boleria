@@ -34,7 +34,7 @@ export async function getOrders(req,res){
     try{
         if(date){
             const ordersData = await connectionDB.query(
-                `SELECT o.orderId, o.createdAt, o.quantity, o.totalPrice,
+                `SELECT o.id, o.createdAt, o.quantity, o.totalPrice,
                 u.id, u.name, u.address, u.phone,
                 c.id, c.name, c.price, c.description, c.image
                 FROM orders o
@@ -51,7 +51,7 @@ export async function getOrders(req,res){
             return res.status(200).send(ordersData)
         }
         const ordersData = await connectionDB.query(
-            `SELECT o.orderId, o.createdAt, o.quantity, o.totalPrice,
+            `SELECT o.id, o.createdAt, o.quantity, o.totalPrice,
             u.id, u.name, u.address, u.phone,
             c.id, c.name, c.price, c.description, c.image
             FROM orders o
@@ -67,4 +67,36 @@ export async function getOrders(req,res){
     }catch(err){
         return res.status(422).send(err.message);
     }
+}
+
+export async function getOrderById(req,res){
+    const id = useParams().id
+
+    if(!id){
+        return res.status(404)
+    }
+    
+    try{
+        if(date){
+            const ordersData = await connectionDB.query(
+                `SELECT o.id, o.createdAt, o.quantity, o.totalPrice,
+                u.id, u.name, u.address, u.phone,
+                c.id, c.name, c.price, c.description, c.image
+                FROM orders o
+                    WHERE o.id=$1
+                    INNER JOIN clients u
+                        ON o.clientId = u.id
+                    INNER JOIN cakes c
+                        ON o.cakesId = c.id`,
+                [id]
+            )
+            if(!ordersData){
+                return res.status(404).send([])
+            }
+            return res.status(200).send(ordersData)
+        }
+    }catch(err){
+        return res.status(422).send(err.message);
+    }
+
 }
