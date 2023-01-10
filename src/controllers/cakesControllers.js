@@ -4,7 +4,6 @@ export default async function cakesControllers(req, res){
     const {name, price, image, description} = req.body;
 
     try {
-
         const cakeNameValidation = await connectionDB.query("SELECT * FROM cakes WHERE name=$1",
             [name]
         )
