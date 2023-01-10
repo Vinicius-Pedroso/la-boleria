@@ -17,6 +17,6 @@ export default async function cakesControllers(req, res){
         )
         return res.sendStatus(201);
     }catch(err){
-        return res.send(err.message);
+        return res.status(422).send(err.message);
     }
 }
