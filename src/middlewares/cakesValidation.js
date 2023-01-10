@@ -1,4 +1,4 @@
-import cakesSchema from "../models/cakes.schema"
+import cakesSchema from "../models/cakes.schema.js"
 
 export default function cakesValidation(req, res, next){
   const cakeData = req.body;
@@ -7,7 +7,7 @@ export default function cakesValidation(req, res, next){
 
   if (error) {
     const errors = error.details.map((detail) => detail.message);
-    return res.status(422).send(errors);
+    return res.status(400).send(errors);
   }
 
   next()
