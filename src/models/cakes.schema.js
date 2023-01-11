@@ -8,3 +8,5 @@ const cakesSchema = joi.object({
 })
 
 export default cakesSchema;
+
+//table flavor
