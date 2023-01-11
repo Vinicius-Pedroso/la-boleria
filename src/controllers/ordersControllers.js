@@ -1,5 +1,4 @@
 import { connectionDB } from "../database/db.js";
-import { useParams } from "react-router-dom";
 
 export async function orderControllers(req, res){
     const {clientId, cakeId, quantity, totalPrice} = req.body;
@@ -29,7 +28,7 @@ export async function orderControllers(req, res){
 }
 
 export async function getOrders(req,res){
-    const date = useParams().date
+    const {date} = req;
     
     try{
         if(date){
@@ -105,7 +104,7 @@ export async function getOrderById(req,res){
 }
 
 export async function getOrdersByClient(req,res){
-    const id = useParams().id
+    const {id} = req;
     
     try{
         const idValidation = await connectionDB.query(
