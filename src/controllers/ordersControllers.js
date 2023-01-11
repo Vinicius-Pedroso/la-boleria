@@ -72,11 +72,50 @@ export async function getOrders(req,res){
 export async function getOrderById(req,res){
     const id = useParams().id
 
-    if(!id){
-        return res.status(404)
+    try{
+        const idValidation = await connectionDB.query(
+            "SELECT id FROM orders WHERE id=$1",
+            [id]
+        )
+        if(!idValidation){
+            return res.status(404)
+        }
+
+        if(date){
+            const ordersData = await connectionDB.query(
+                `SELECT o.id, o.createdAt, o.quantity, o.totalPrice,
+                u.id, u.name, u.address, u.phone,
+                c.id, c.name, c.price, c.description, c.image
+                FROM orders o
+                    WHERE o.id=$1
+                    INNER JOIN clients u
+                        ON o.clientId = u.id
+                    INNER JOIN cakes c
+                        ON o.cakesId = c.id`,
+                [id]
+            )
+            if(!ordersData){
+                return res.status(404).send([])
+            }
+            return res.status(200).send(ordersData)
+        }
+    }catch(err){
+        return res.status(422).send(err.message);
     }
+}
+
+export async function getOrdersByClient(req,res){
+    const id = useParams().id
     
     try{
+        const idValidation = await connectionDB.query(
+            "SELECT id FROM clients WHERE id=$1",
+            [id]
+        )
+        if(!idValidation){
+            return res.status(404)
+        }
+
         if(date){
             const ordersData = await connectionDB.query(
                 `SELECT o.id, o.createdAt, o.quantity, o.totalPrice,

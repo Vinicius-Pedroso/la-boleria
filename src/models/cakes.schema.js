@@ -1,10 +1,10 @@
 import joi from 'joi'
 
 const cakesSchema = joi.object({
-    name: joi.required().string().min(2),
-    price: joi.required().number().positive(),
-    image: joi.required().string().uri(),
-	description: joi.required().string()
+    name: joi.string().min(2).required(),
+    price: joi.number().positive().required(),
+    image: joi.string().uri().required(),
+	description: joi.string().required()
 })
 
 export default cakesSchema;
